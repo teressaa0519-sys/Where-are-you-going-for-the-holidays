@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>放假去哪玩？抽籤器</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: "Microsoft JhengHei", sans-serif;
+    background: linear-gradient(135deg, #fff0e8, #eee5ff);
+    color: #444;
+}
+
+.container {
+    width: 100%;
+    max-width: 560px;
+    padding: 35px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #8061a5;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #999;
+    margin-bottom: 28px;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+textarea {
+    width: 100%;
+    height: 170px;
+    padding: 15px;
+    border: 2px solid #e4d8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.8;
+    resize: vertical;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #a68bc5;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #8968aa;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #70518f;
+    transform: translateY(-2px);
+}
+
+.result {
+    margin-top: 28px;
+    padding: 28px 15px;
+    min-height: 145px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #faf6ff;
+    border: 2px dashed #d8c5eb;
+    border-radius: 16px;
+}
+
+.result-title {
+    color: #9278ad;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+#result {
+    font-size: 27px;
+    font-weight: bold;
+    color: #735092;
+    overflow-wrap: anywhere;
+}
+
+#error {
+    text-align: center;
+    color: #d44;
+    min-height: 24px;
+    margin-bottom: 0;
+}
+
+.hint {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌤️ 放假去哪玩？</h1>
+
+    <p class="subtitle">
+        選不出行程嗎？讓抽籤器幫你決定！
+    </p>
+
+    <label for="options">
+        輸入想做的事情（每行一個選項）
+    </label>
+
+    <textarea id="options">逛展覽
+逛街
+咖啡廳讀書
+在家打電動</textarea>
+
+    <button id="drawButton">幫我選</button>
+
+    <div class="result">
+        <div class="result-title">
+            🎉 這次抽中的行程是
+        </div>
+
+        <div id="result">
+            準備好就來抽籤吧！
+        </div>
+    </div>
+
+    <p id="error"></p>
+
+    <p class="hint">
+        每個有效選項都有相同的中籤機率！
+    </p>
+
+</div>
+
+<script>
+
+const optionsInput = document.getElementById("options");
+const drawButton = document.getElementById("drawButton");
+const result = document.getElementById("result");
+const error = document.getElementById("error");
+
+function draw() {
+
+    // 取得輸入內容並依照換行分割
+    let options = optionsInput.value
+        .split("\n")
+        .map(item => item.trim())
+        .filter(item => item !== "");
+
+    // 移除完全相同的重複選項
+    options = [...new Set(options)];
+
+    // 清除舊訊息
+    error.textContent = "";
+
+    // 如果清單沒有任何有效選項
+    if (options.length === 0) {
+        result.textContent = "尚未抽出結果";
+        error.textContent = "請先輸入至少一個選項";
+        return;
+    }
+
+    // 隨機抽選
+    const randomIndex = Math.floor(Math.random() * options.length);
+
+    // 顯示抽籤結果
+    result.textContent = options[randomIndex];
+}
+
+// 按鈕事件
+drawButton.addEventListener("click", draw);
+
+</script>
+
+</body>
+</html>
